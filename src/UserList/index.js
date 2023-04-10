@@ -11,6 +11,7 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Spinner from 'react-bootstrap/Spinner';
 
 const theme = {
     theme: "colored"
@@ -25,9 +26,11 @@ export default function UserList({ isAddUser, setIsAddUser }) {
     }
     const [userDetails, setUserDetails] = useState(initialValues);
     const [allUserData, setAllUserData] = useState([]);
+    const [HandelLoader, setHandelLoader] = useState(true);
 
     const getUserData = async () => {
         const data = await getAllUsers();
+        setHandelLoader(false)
         setAllUserData(data)
     };
 
@@ -90,8 +93,9 @@ export default function UserList({ isAddUser, setIsAddUser }) {
     };
     return (
         <div className='p-1'>
+            {HandelLoader && <Spinner className="spinner" animation="border" role="status" />}
             <Row xs={1} sm={2} md={3} lg={4} className="g-4 p-3">
-                {allUserData.length && allUserData.map(user => {
+                {allUserData.length > 0 && allUserData.map(user => {
                     return <Col key={user.id}>
                         <Card bg="light">
                             <div className='ImgDiv'>
